@@ -1,0 +1,42 @@
+{
+  "name": "todolist-api",
+  "version": "1.0.0",
+  "description": "API para TodoList",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon",
+    "test": "SET NODE_ENV=test&& mocha test/**/*.js",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint:check": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "author": "Samuel Santos",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "consign": "^0.1.6",
+    "express": "^4.18.1",
+    "jwt-simple": "^0.5.6",
+    "module-alias": "^2.2.2",
+    "moment": "^2.29.3",
+    "mongoose": "^6.4.0",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.18.2",
+    "chai": "^4.3.6",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "mocha": "^10.0.0",
+    "nodemon": "^2.0.16",
+    "prettier": "^2.7.1",
+    "supertest": "^6.2.3"
+  },
+  "_moduleAliases": {
+    "~/dao": "dao",
+    "~/models": "models",
+    "~/routes": "routes"
+  }
+}
