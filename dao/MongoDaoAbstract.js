@@ -30,6 +30,10 @@ class MongoDaoAbstract {
     async findOne(query) {
         let obj = await this.model.findOne(query);
 
+        if (!obj) {
+            return null;
+        }
+
         //adiciona a property id para cada objeto
         obj = this.convert(obj)
 

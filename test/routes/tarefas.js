@@ -77,6 +77,24 @@ describe('Routes: Tarefas', () => {
                     });
             });
         });
+        describe('status 412', () => {
+            it('Retorna erro quando o parametro inicio nao foi informado', done => {
+                request.get('/tarefas')
+                    .set({ Authorization: `Bearer ${token}` })
+                    .query({ inicio: '2022-07-01', fim: '' })
+                    .expect(412)
+                    .end(done);
+            });
+        });
+        describe('status 412', () => {
+            it('Retorna erro quando o parametro fim nao foi informado', done => {
+                request.get('/tarefas')
+                    .set({ Authorization: `Bearer ${token}` })
+                    .query({ inicio: '', fim: '2022-07-10' })
+                    .expect(412)
+                    .end(done);
+            });
+        });
         describe('status 401', () => {
             it('Retorna erro quando usuario nao foi autenticado', done => {
                 request.get('/tarefas')
@@ -326,6 +344,72 @@ describe('Routes: Tarefas', () => {
             it('Retorna erro quando usuario nao foi autenticado', done => {
                 request.get('/tarefas/find')
                     .expect(401)
+                    .end(done);
+            });
+        });
+        describe('status 412', () => {
+            it('Retorna erro quando o parametro text nao foi informado', done => {
+                request.get('/tarefas/find')
+                    .set({ Authorization: `Bearer ${token}` })
+                    .query({ text: '' })
+                    .expect(412)
+                    .end(done);
+            });
+        });
+    });
+
+    describe('POST /tarefas/done/:id', () => {
+        beforeEach(async () => {
+            await usuarioDao.deleteAll();
+
+            const json = {
+                nome: 'Samuel Santos',
+                email: 'samuca.santos@gmail.com',
+                senha: 'samuca'
+            }
+            const usuario = new Usuario(json)
+            const result = await usuarioDao.save(usuario)
+
+            token = jwt.encode({ id: result.id }, config.jwt.secret);
+
+            await tarefaDao.deleteAll();
+
+            const tarefa = {
+                "data": "2022-07-06",
+                "nome": "Estudar Node js",
+                "descricao": "Fazer backend de todolist com Node js",
+                "done": false,
+                "usuarioId": result.id
+            }
+
+            tarefaFake = await tarefaDao.save(tarefa)
+
+        });
+        describe('status 200', () => {
+            it('Retorna OK', done => {
+                request.post(`/tarefas/done/${tarefaFake.id}`)
+                    .set({ Authorization: `Bearer ${token}` })
+                    .send({ done: true })
+                    .expect(200)
+                    .end((err, res) => {
+                        expect(res.body).to.eql('OK');
+                        done(err);
+                    });
+            });
+        });
+        describe('status 401', () => {
+            it('Retorna erro quando usuario nao foi autenticado', done => {
+                request.post(`/tarefas/done/${tarefaFake.id}`)
+                    .expect(401)
+                    .end(done);
+            });
+        });
+        describe('status 412', () => {
+            it('Retorna erro quando o parametro done nao foi informado', done => {
+                request.post(`/tarefas/done/${tarefaFake.id}`)
+                    .set({ Authorization: `Bearer ${token}` })
+                    .send({ done: '' })
+                    .expect(412)
                     .end(done);
             });
         });

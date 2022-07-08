@@ -13,7 +13,7 @@ module.exports = (app) => {
             if (email && senha) {
                 const usuario = await usuarioDao.findByEmail(email);
 
-                if (usuario.validate(senha)) {
+                if (usuario && usuario.validate(senha)) {
                     const payload = { id: usuario.id };
                     const token = jwt.encode(payload, secret);
 

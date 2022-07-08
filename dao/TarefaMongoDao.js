@@ -55,6 +55,10 @@ class TarefaMongoDao extends MongoDaoAbstract {
         const modelList = await this.find(query);
         return modelList
     }
+
+    async done(id, done) {
+        await this.model.updateOne({ _id: id}, { $set: { done: done } });
+    }
 }
 
 module.exports = TarefaMongoDao;
