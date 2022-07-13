@@ -5,6 +5,16 @@ module.exports = app => {
     const usuarioDao = new UsuarioMongoDao()
 
     app.route('/usuarios')
+        .get(async (req, res) => {
+            try {
+                const usuarioList = await usuarioDao.findAll()
+                const result = usuarioList.map(obj => obj.toJson())
+                res.json(result);
+
+            } catch (err) {
+                res.status(412).json({ msg: err.message });
+            }
+        })
         .post(async (req, res) => {
             try {
                 const json = req.body
@@ -24,7 +34,7 @@ module.exports = app => {
             try {
                 await usuarioDao.delete(req.user.id);
                 res.json('OK');
-                
+
             } catch (err) {
                 res.status(412).json({ msg: err.message });
             }
