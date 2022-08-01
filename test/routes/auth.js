@@ -8,6 +8,64 @@ describe('Routes: Auth', () => {
 
     let token;
 
+    describe('POST /auth/register', () => {
+        beforeEach(async () => {
+            await usuarioDao.deleteAll();
+        });
+        describe('status 200', () => {
+            it('Retorna usuario cadastrado', done => {
+                request.post('/auth/register')
+                    .send({
+                        nome: 'Samuel Santos',
+                        email: 'samuca.santos@gmail.com',
+                        senha: 'samuca'
+                    })
+                    .expect(200)
+                    .end((err, res) => {
+                        expect(res.body.nome).to.eql('Samuel Santos');
+                        expect(res.body.email).to.eql('samuca.santos@gmail.com');
+                        expect(res.body.id).not.to.be.null
+                        expect(res.body.hash).to.be.undefined
+                        expect(res.body.salt).to.be.undefined
+                        done(err);
+                    });
+            });
+        });
+        describe('status 412', () => {
+            it('Retorna erro quando campo nome nao preenchido', done => {
+                request.post('/auth/register')
+                    .send({
+                        nome: '',
+                        email: 'samuca.santos@gmail.com',
+                        senha: 'samuca'
+                    })
+                    .expect(412)
+                    .end(done);
+            });
+            it('Retorna erro quando campo email nao preenchido', done => {
+                request.post('/auth/register')
+                    .send({
+                        nome: 'Samuel Santos',
+                        email: '',
+                        senha: 'samuca'
+                    })
+                    .expect(412)
+                    .end(done);
+            });
+            it('Retorna erro quando campo senha nao preenchido', done => {
+                request.post('/auth/register')
+                    .send({
+                        nome: 'Samuel Santos',
+                        email: 'samuca.santos@gmail.com',
+                        senha: ''
+                    })
+                    .expect(412)
+                    .end(done);
+            });
+        });
+    });
+
+
     describe('POST /auth/login', () => {
         beforeEach(async () => {
             await usuarioDao.deleteAll();
