@@ -83,10 +83,7 @@ module.exports = app => {
             try {
                 const { done } = req.body
 
-                console.log('req.params.id: ' + req.params.id)
-                console.log('done: ' + done)
-
-                if (!done) {
+                if (done == null) {
                     res.status(412).json({ msg: 'parâmetro done não informado' });
                     return;
                 }
