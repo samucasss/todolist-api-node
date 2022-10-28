@@ -2,8 +2,10 @@ require('module-alias/register')
 
 const express = require('express');
 const consign = require('consign');
+var cors = require('cors')
 
 const app = express();
+app.use(cors())
 
 consign()
     .include('db.js')
