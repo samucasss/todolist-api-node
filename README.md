@@ -1,8 +1,8 @@
 # todolist-api-node
 
-Implementação do backend de aplicação ToDoList com Node JS
+Implementação do backend de aplicação ToDoList com Node JS. Tecnologias utilizadas: Node js, Express, Mongoose e JWT authentication.
 
-Aplicação ToDoList:
+## Aplicação ToDoList:
 
 O objetivo do sistema é realizar o acompanhamento de tarefas diárias. 
 
